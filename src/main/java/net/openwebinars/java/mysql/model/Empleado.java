@@ -68,11 +68,11 @@ public class Empleado {
         this.email = email;
     }
 
-    public LocalDate getFehcaNacimiento() {
+    public LocalDate getFechaNacimiento() {
         return fehcaNacimiento;
     }
 
-    public void setFehcaNacimiento(LocalDate fehcaNacimiento) {
+    public void setFechaNacimiento(LocalDate fehcaNacimiento) {
         this.fehcaNacimiento = fehcaNacimiento;
     }
 

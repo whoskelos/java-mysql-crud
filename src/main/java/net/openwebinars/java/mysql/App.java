@@ -40,7 +40,7 @@ public class App {
             System.out.println(emp1);
             System.out.println(" ");
 
-            emp1.setFehcaNacimiento(LocalDate.of(1999,1,21));
+            emp1.setFechaNacimiento(LocalDate.of(1999,1,21));
 
             n = dao.update(emp1);
 

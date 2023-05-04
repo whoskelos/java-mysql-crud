@@ -38,13 +38,16 @@ public class Menu {
                     listAll();
                     break;
                 case 2:
+                    listById();
                     break;
                 case 3:
                     insert();
                     break;
                 case 4:
+                    update();
                     break;
                 case 5:
+                    delete();
                     break;
                 case 0:
                     System.out.println("Saliendo del programa");
@@ -85,7 +88,7 @@ public class Menu {
         System.out.print("Introduzca los apellidos del empleado: ");
         String apellidos = reader.nextLine();
 
-        System.out.print("Introduzca la fecha de nacimiento del empleado (formato dd/MM//aaaa): ");
+        System.out.print("Introduzca la fecha de nacimiento del empleado (formato dd/MM/aaaa): ");
         LocalDate fechaNacimiento = reader.nextLocalDate();
 
         System.out.print("Introduzca el puesto del empleado: ");
@@ -129,6 +132,112 @@ public class Menu {
 
     }
 
+    public void listById() {
+
+        System.out.println("\nBUSQUEDA DE EMPLEADO POR ID");
+        System.out.println("--------------------------------");
+
+        try {
+            System.out.println("Introduzca el ID del empleado a buscar");
+
+            int id = reader.nextInt();
+
+            Empleado empleado = dao.getById(id);
+
+            if (empleado == null) {
+                System.out.println("No hay empleados registrados en la base de datos con ese ID.");
+            } else {
+                printCabeceraTablaEmpleado();
+                printEmpleado(empleado);
+            }
+
+            System.out.println("\n");
+        } catch (SQLException e) {
+            System.out.println("Error al consultar en la base de datos. Vuelva a intentarlo o contacte con el admin.");
+        }
+    }
+
+    public void update() {
+        System.out.println("\nACTUALIZACION DE UN EMPLEADO");
+        System.out.println("--------------------");
+
+        try {
+            System.out.println("Introduzca el ID del empleado a buscar");
+            int id = reader.nextInt();
+            Empleado empleado =  dao.getById(id);
+
+            if (empleado == null)
+                System.out.println("No hay empleados registrados en la base de datos con ese ID");
+            else {
+                printCabeceraTablaEmpleado();
+                printEmpleado(empleado);
+                System.out.println("\n");
+
+                System.out.printf("Introduzca el nombre (sin apellidos) del empleado (%s): ", empleado.getNombre());
+                String nombre = reader.nextLine();
+                nombre = (nombre.isBlank()) ? empleado.getNombre() : nombre;
+
+                System.out.printf("Introduzca los apellidos del empleado (%s): ", empleado.getApellidos());
+                String apellidos = reader.nextLine();
+                apellidos = (apellidos.isBlank()) ? empleado.getApellidos() : apellidos;
+
+                System.out.printf("Introduzca la fecha de nacimiento del empleado (formato dd/MM/aaaa) (%s): ",
+                        empleado.getFechaNacimiento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                String strFechaNacimiento = reader.nextLine();
+                LocalDate fechaNacimiento = (strFechaNacimiento.isBlank()) ? empleado.getFechaNacimiento()
+                        : LocalDate.parse(strFechaNacimiento, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+                System.out.printf("Introduzca el puesto del empleado (%s): ", empleado.getPuesto());
+                String puesto = reader.nextLine();
+                puesto = (puesto.isBlank()) ? empleado.getPuesto() : puesto;
+
+
+                System.out.printf("Introduzca el email del nuevo empleado (%s): ", empleado.getEmail());
+                String email = reader.nextLine();
+                email = (email.isBlank()) ? empleado.getEmail() : email;
+
+                empleado.setNombre(nombre);
+                empleado.setApellidos(apellidos);
+                empleado.setFechaNacimiento(fechaNacimiento);
+                empleado.setPuesto(puesto);
+                empleado.setEmail(email);
+
+                dao.update(empleado);
+
+                System.out.println("");
+                System.out.printf("Empleado con ID %s actualizado", empleado.getId_empleado());
+                System.out.println("");
+
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Error al consultar en la base de datos. Vuelva a intentarlo o contacte con el admin.");
+        }
+    }
+
+    private void delete() {
+        System.out.println("\nBORRADO DE UN EMPLEADO");
+        System.out.println("--------------------------------");
+
+        try {
+            System.out.print("Introduzca el ID del empleado a borrar: ");
+            int id = reader.nextInt();
+
+            System.out.printf("Esta seguro que desea borrar al empleado con iD=%s? (s/n)", id);
+            String borrar = reader.nextLine();
+
+            if (borrar.equalsIgnoreCase("s")) {
+                dao.delete(id);
+                System.out.printf("El empleado con ID %s se ha borrado\n", id);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error al consultar en la base de datos. Vuelva a intentarlo o contacte con el admin.");
+
+        }
+
+        System.out.println("");
+    }
+
     private void printCabeceraTablaEmpleado() {
         System.out.printf("%2s %30s %8s %10s %25s", "ID", "NOMBRE", "FEC. NAC.", "PUESTO", "EMAIL");
         System.out.println("");
@@ -140,7 +249,7 @@ public class Menu {
         System.out.printf("%2s %30s %9s %20s %25s\n",
                 emp.getId_empleado(),
                 emp.getNombre() + " " + emp.getApellidos(),
-                emp.getFehcaNacimiento().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")),
+                emp.getFechaNacimiento().format(DateTimeFormatter.ofPattern("dd-MM-yy")),
                 emp.getPuesto(),
                 emp.getEmail()
         );

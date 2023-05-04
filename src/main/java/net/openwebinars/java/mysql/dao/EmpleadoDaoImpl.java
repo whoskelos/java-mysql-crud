@@ -32,7 +32,7 @@ public class EmpleadoDaoImpl implements EmpleadoDao{
 
             pstm.setString(1, emp.getNombre());
             pstm.setString(2, emp.getApellidos());
-            pstm.setDate(3, Date.valueOf(emp.getFehcaNacimiento()));
+            pstm.setDate(3, Date.valueOf(emp.getFechaNacimiento()));
             pstm.setString(4, emp.getPuesto());
             pstm.setString(5,emp.getEmail());
 
@@ -59,7 +59,7 @@ public class EmpleadoDaoImpl implements EmpleadoDao{
                     result.setId_empleado(rs.getInt("id_empleado"));
                     result.setNombre(rs.getString("nombre"));
                     result.setApellidos(rs.getString("apellidos"));
-                    result.setFehcaNacimiento(rs.getDate("fecha_nacimiento").toLocalDate());
+                    result.setFechaNacimiento(rs.getDate("fecha_nacimiento").toLocalDate());
                     result.setPuesto(rs.getString("puesto"));
                     result.setEmail(rs.getString("email"));
 
@@ -88,7 +88,7 @@ public class EmpleadoDaoImpl implements EmpleadoDao{
                 emp.setId_empleado(rs.getInt("id_empleado"));
                 emp.setNombre(rs.getString("nombre"));
                 emp.setApellidos(rs.getString("apellidos"));
-                emp.setFehcaNacimiento(rs.getDate("fecha_nacimiento").toLocalDate());
+                emp.setFechaNacimiento(rs.getDate("fecha_nacimiento").toLocalDate());
                 emp.setPuesto(rs.getString("puesto"));
                 emp.setEmail(rs.getString("email"));
 
@@ -110,7 +110,7 @@ public class EmpleadoDaoImpl implements EmpleadoDao{
 
             pstm.setString(1, emp.getNombre());
             pstm.setString(2,emp.getApellidos());
-            pstm.setDate(3,Date.valueOf(emp.getFehcaNacimiento()));
+            pstm.setDate(3,Date.valueOf(emp.getFechaNacimiento()));
             pstm.setString(4, emp.getPuesto());
             pstm.setString(5,emp.getEmail());
             pstm.setInt(6,emp.getId_empleado());
